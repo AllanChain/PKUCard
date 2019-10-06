@@ -200,13 +200,13 @@ r = s.post('https://card.pku.edu.cn/cassyno/index', data={
 
 ![9](img/9.png)
 
-Hard coded dates... 我喜欢！
+Hard-coded dates... 我喜欢！
 
 其他什么`datebox`不要管，自然转到`InitGrid`: 
 
 ![10](img/10.png)
 
-哈！就在这里。这个`acc`应该就是赚那么多圈要的用户ID了。
+哈！就在这里。这个`acc`应该就是转那么多圈要的用户ID了。
 
 但是。。`datagrid`是什么？
 

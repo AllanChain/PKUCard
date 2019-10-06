@@ -21,6 +21,7 @@ with Session() as s:
         'userName': config.user_name,
         'password': config.password,
     }).json()
+    print(r)
     token = r['token']
     # iaaa是先POST获取token，再把token用GET传给这个神奇的网址
     # 然而漏洞就在于这个GET传参貌似没有为后面步骤起到作用
@@ -37,7 +38,7 @@ with Session() as s:
     r = s.post('https://card.pku.edu.cn/cassyno/index', data={
         'errorcode': 1,
         'continueurl': '',
-        'ssoticketid': config.user_name
+        'ssoticketid': token  # config.user_name
     })
     print(r.text)
     r = s.post('https://card.pku.edu.cn/Page/Page', data={
