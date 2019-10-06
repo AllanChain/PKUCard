@@ -49,6 +49,7 @@ with Session() as s:
             total = json_data['total']
             # ensure_ascii会escape中文，禁用可使显示人话
             # 设置indent，不要一行显示
+            # 为什么要保存一个json呢？听说把抓到的东西立马保存下来是个好习惯
             dump(json_data, f, ensure_ascii=False, indent=4)
             # 手动向上取整
             if i >= (total // 15) + (total % 15 > 0):
