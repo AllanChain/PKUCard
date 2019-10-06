@@ -170,6 +170,69 @@ r = s.get(
 </html>
 ```
 
+**bug已经修好了，`ssoticketid`不再是学号，而是token，以下是之前的操作**
+
 我就不吐槽定义了`gid`而不用了。又是js填隐形表单。手动打进。
 
-To be continued...
+```python
+r = s.post('https://card.pku.edu.cn/cassyno/index', data={
+    'errorcode': 1,
+    'continueurl': '',
+    'ssoticketid': config.user_name
+})
+```
+
+#### 回到校园卡大厅
+
+转了一圈又回来了。然后右键检查“流水信息”，唔，又是：
+
+![1](img/1.png)
+
+和一开始一模一样！差点以为第一步走了弯路！照搬！
+
+#### 余额记录显示界面
+
+这里就头大了，怎么那么多`Ajaxxxx`的东西啊！
+
+这里有一个小技巧，把整个函数复制到`Console`里，把success的部分改成`console.log`，回车执行，就可以看到输出了！
+
+然后可以右键检查“最近一个月”，但是没有`onclick`。没关系，点击`Event Listeners`选项卡，有`click`，就可以看到事件监听在哪里了：
+
+![9](img/9.png)
+
+Hard coded dates... 我喜欢！
+
+其他什么`datebox`不要管，自然转到`InitGrid`: 
+
+![10](img/10.png)
+
+哈！就在这里。这个`acc`应该就是赚那么多圈要的用户ID了。
+
+但是。。`datagrid`是什么？
+
+感兴趣的同学可以查一下（也不用查，看看脚本列表就知道了），是`jquery-easyui`的表格函数。
+
+一眼就知道是用POST，加上这三个参数。果然返回：
+
+```json
+{"issucceed":false,"name":null,"total":163,"tranamt":0,"tranamt1":0,"tranamt2":0,"parm1":null,"parm2":null,"trannum":0,"rows":[{"RO":1,"OCCTIME":"2019-10-05 17:37:07","EFFECTDATE":"2019-10-05 17:34:20","MERCNAME":"艺园食堂副食                            ","TRANAMT":-9.65,"TRANNAME":"持卡人消费                              ","TRANCODE":"15","CARDBAL":215.48,"JDESC":"","JNUM":16793305,"MACCOUNT":1000401,"F1":"1","F2":"11","F3":"2","SYSCODE":19,"POSCODE":12},{"RO":2,"OCCTIME":"2019-10-05 11:27:12",......
+```
+
+正当我满心欢喜要获取开学以来我的记录时，发现。。怎么就这么几条？怎么一直是15条？哦，原来一页15条！那怎么获取第二页？源码里没有写啊！难道要我去研究`jquery-easyui`吗？
+
+施主莫慌，看我灵魂一笔：
+
+```python
+r = s.post('https://card.pku.edu.cn/Report/GetPersonTrjn', data={
+    'sdate': config.start_date,
+    'edate': config.end_date,
+    'account': account,
+    'page': i,  # bingo!
+})
+```
+
+一猜就中！就是加一个`page`参数！
+
+---
+
+好啦，至此网页抓取内容就讲完了，数据处理部分感兴趣自己看源码吧！
