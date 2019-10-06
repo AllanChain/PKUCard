@@ -181,7 +181,7 @@ r = s.get(
 
 **bug已经修好了，`ssoticketid`不再是学号，而是一个和之前那个不一样的token，以下是之前的操作**
 
-我就不吐槽定义了`gid`而不用了。又是js填隐形表单。手动打进。
+我就不吐槽定义了`gid`而不用了。又是js填隐形表单。手动打进。虽然有非零的`errorcode`，但是只是心里一慌，并不阻碍下一步前进。
 
 ```python
 r = s.post('https://card.pku.edu.cn/cassyno/index', data={
@@ -226,6 +226,8 @@ Hard-coded dates... 我喜欢！
 ```json
 {"issucceed":false,"name":null,"total":163,"tranamt":0,"tranamt1":0,"tranamt2":0,"parm1":null,"parm2":null,"trannum":0,"rows":[{"RO":1,"OCCTIME":"2019-10-05 17:37:07","EFFECTDATE":"2019-10-05 17:34:20","MERCNAME":"艺园食堂副食                            ","TRANAMT":-9.65,"TRANNAME":"持卡人消费                              ","TRANCODE":"15","CARDBAL":215.48,"JDESC":"","JNUM":16793305,"MACCOUNT":1000401,"F1":"1","F2":"11","F3":"2","SYSCODE":19,"POSCODE":12},{"RO":2,"OCCTIME":"2019-10-05 11:27:12",......
 ```
+
+不要看`"issucceed":false`，返回数据就好！
 
 正当我满心欢喜要获取开学以来我的记录时，发现。。怎么就这么几条？怎么一直是15条？哦，原来一页15条！那怎么获取第二页？源码里没有写啊！难道要我去研究`jquery-easyui`吗？
 
