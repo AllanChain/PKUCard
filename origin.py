@@ -34,11 +34,12 @@ with Session() as s:
         }
     )
     print(r.text)
+    ticket = search('id="ssoticketid" value="(.*?)"', r.text).group(1)
     # ============以下就基本是`main.py`里的内容了============
     r = s.post('https://card.pku.edu.cn/cassyno/index', data={
         'errorcode': 1,
         'continueurl': '',
-        'ssoticketid': token  # config.user_name
+        'ssoticketid': ticket  # config.user_name
     })
     print(r.text)
     r = s.post('https://card.pku.edu.cn/Page/Page', data={
