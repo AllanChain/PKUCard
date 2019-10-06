@@ -46,7 +46,7 @@
 
 ---
 
-啊！bug修好了！`origin.py`还能用！已经把`config.py`改成运行时关闭回显（不显示字符）提示输入密码的形式。如果要看`main.py`的错误提示，请在密码提示输入时直接敲回车。
+啊！bug修好了！`origin.py`稍微改改还能用！已经把`config.py`改成运行时关闭回显（不显示字符）提示输入密码的形式。如果要看`main.py`的错误提示，请在密码提示输入时直接敲回车。
 
 大家可以用来查自己的记录了！
 
@@ -179,7 +179,7 @@ r = s.get(
 </html>
 ```
 
-**bug已经修好了，`ssoticketid`不再是学号，而是token，以下是之前的操作**
+**bug已经修好了，`ssoticketid`不再是学号，而是一个和之前那个不一样的token，以下是之前的操作**
 
 我就不吐槽定义了`gid`而不用了。又是js填隐形表单。手动打进。
 
@@ -197,7 +197,7 @@ r = s.post('https://card.pku.edu.cn/cassyno/index', data={
 
 ![1](img/1.png)
 
-和一开始一模一样！差点以为第一步走了弯路！照搬！
+和一开始一模一样！差点以为第一步白写了！照搬！
 
 #### 余额记录显示界面
 
@@ -205,7 +205,7 @@ r = s.post('https://card.pku.edu.cn/cassyno/index', data={
 
 这里有一个小技巧，把整个函数复制到`Console`里，把success的部分改成`console.log`，回车执行，就可以看到输出了！
 
-然后可以右键检查“最近一个月”，但是没有`onclick`。没关系，点击`Event Listeners`选项卡，有`click`，就可以看到事件监听在哪里了：
+然后如果单刀直入，可以右键检查“最近一个月”，但是没有`onclick`。没关系，点击`Event Listeners`选项卡，有`click`，就可以看到事件监听在哪里了：
 
 ![9](img/9.png)
 
@@ -253,7 +253,7 @@ r = s.post('https://card.pku.edu.cn/Report/GetPersonTrjn', data={
 但是，漏洞谜之进化，惊现随机掉落的过程！且听我道来：
 
 
-> 我发现我用我的账号用origin.py（原稿，把`ssoticketid`参数改成`token`）后，的确可以获得自己的数据。
+> 我发现我用我的账号用origin.py（原稿，把`ssoticketid`参数改成`token`\[是的，你没有看错，不是`ticket`\]）后，的确可以获得自己的数据。
 > 
 > 然后一段时间内，无论POST什么东西上去，都会返回自己的数据。估计是服务端实现了一个定时记录的机制。
 > 
