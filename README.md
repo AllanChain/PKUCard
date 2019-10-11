@@ -46,7 +46,7 @@
 
 ---
 
-啊！bug修好了！`origin.py`还能用！已经把`config.py`改成运行时关闭回显（不显示字符）提示输入密码的形式。如果要看`main.py`的错误提示，请在密码提示输入时直接敲回车。
+啊！bug修好了！`origin.py`稍微改改还能用！已经把`config.py`改成运行时关闭回显（不显示字符）提示输入密码的形式。如果要看`main.py`的错误提示，请在密码提示输入时直接敲回车。
 
 大家可以用来查自己的记录了！
 
@@ -179,9 +179,9 @@ r = s.get(
 </html>
 ```
 
-**bug已经修好了，`ssoticketid`不再是学号，而是token，以下是之前的操作**
+**bug已经修好了，`ssoticketid`不再是学号，而是一个和之前那个不一样的token，以下是之前的操作**
 
-我就不吐槽定义了`gid`而不用了。又是js填隐形表单。手动打进。
+我就不吐槽定义了`gid`而不用了。又是js填隐形表单。手动打进。虽然有非零的`errorcode`，但是只是心里一慌，并不阻碍下一步前进。
 
 ```python
 r = s.post('https://card.pku.edu.cn/cassyno/index', data={
@@ -197,7 +197,7 @@ r = s.post('https://card.pku.edu.cn/cassyno/index', data={
 
 ![1](img/1.png)
 
-和一开始一模一样！差点以为第一步走了弯路！照搬！
+和一开始一模一样！差点以为第一步白写了！照搬！
 
 #### 余额记录显示界面
 
@@ -205,7 +205,7 @@ r = s.post('https://card.pku.edu.cn/cassyno/index', data={
 
 这里有一个小技巧，把整个函数复制到`Console`里，把success的部分改成`console.log`，回车执行，就可以看到输出了！
 
-然后可以右键检查“最近一个月”，但是没有`onclick`。没关系，点击`Event Listeners`选项卡，有`click`，就可以看到事件监听在哪里了：
+然后如果单刀直入，可以右键检查“最近一个月”，但是没有`onclick`。没关系，点击`Event Listeners`选项卡，有`click`，就可以看到事件监听在哪里了：
 
 ![9](img/9.png)
 
@@ -226,6 +226,8 @@ Hard-coded dates... 我喜欢！
 ```json
 {"issucceed":false,"name":null,"total":163,"tranamt":0,"tranamt1":0,"tranamt2":0,"parm1":null,"parm2":null,"trannum":0,"rows":[{"RO":1,"OCCTIME":"2019-10-05 17:37:07","EFFECTDATE":"2019-10-05 17:34:20","MERCNAME":"艺园食堂副食                            ","TRANAMT":-9.65,"TRANNAME":"持卡人消费                              ","TRANCODE":"15","CARDBAL":215.48,"JDESC":"","JNUM":16793305,"MACCOUNT":1000401,"F1":"1","F2":"11","F3":"2","SYSCODE":19,"POSCODE":12},{"RO":2,"OCCTIME":"2019-10-05 11:27:12",......
 ```
+
+不要看`"issucceed":false`，返回数据就好！
 
 正当我满心欢喜要获取开学以来我的记录时，发现。。怎么就这么几条？怎么一直是15条？哦，原来一页15条！那怎么获取第二页？源码里没有写啊！难道要我去研究`jquery-easyui`吗？
 
@@ -253,13 +255,21 @@ r = s.post('https://card.pku.edu.cn/Report/GetPersonTrjn', data={
 但是，漏洞谜之进化，惊现随机掉落的过程！且听我道来：
 
 
-> 我发现我用我的账号用origin.py（原稿，把`ssoticketid`参数改成`token`）后，的确可以获得自己的数据。
+> 我发现我用我的账号用origin.py（原稿，把`ssoticketid`参数改成`token`\[是的，你没有看错，不是`ticket`\]）后，的确可以获得自己的数据。
 > 
 > 然后一段时间内，无论POST什么东西上去，都会返回自己的数据。估计是服务端实现了一个定时记录的机制。
 > 
 > 过了这段时间，就会随机掉落一位同学的记录（有时候是长时间等待或空值）！
 
 然后我大胆假设，立下flag：这些同学恰巧这时登录系统，然后服务器记住了他们的登录状态（而不是像以前那样把一个key交给客户端）。这时我的程序进来了。服务器错将程序认为是之前操作的同学（也许是内网IP问题？），放心地把数据交给了我。
+
+---
+
+贴上来自Nginx的观点：
+
+> 线程复用没有干掉threadLocal吧……
+
+嗯，很高级，非常有道理。
 
 ## 结束
 
