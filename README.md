@@ -84,13 +84,13 @@ with Session() as s:
 
 ```python
 r = s.post('https://card.pku.edu.cn/Page/Page', data={
-        'flowID': 15,
-        'type': 1,
-        'apptype':  2,
-        'Url': '%23',
-        'MenuName': '流水查询',
-        'EMenuName': '流水查询',
-    })
+    'flowID': 15,
+    'type': 1,
+    'apptype':  2,
+    'Url': '%23',
+    'MenuName': '流水查询',
+    'EMenuName': '流水查询',
+})
 ```
 
 #### 来到iaaa
@@ -105,7 +105,7 @@ r = s.post('https://card.pku.edu.cn/Page/Page', data={
 
 ![6](img/6.png)
 
-通过`return false`的“土办法”阻止表单提交。（那你:footprints::horse:为什么要做一个`form`？）
+通过`return false`的“土办法”阻止表单提交。
 
 好，继续看`oauthLogon`:
 
